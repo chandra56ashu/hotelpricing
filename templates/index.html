@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>CMDC Hotel Pricing Model</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 30px auto; padding: 0 16px; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin-top: 16px; }
+    label { display: block; margin-top: 10px; font-weight: 600; }
+    input, select { width: 100%; padding: 10px; margin-top: 6px; box-sizing: border-box; }
+    button { margin-top: 16px; padding: 10px 14px; cursor: pointer; }
+    .error { color: #b00020; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+    .kpi { font-size: 18px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    small { display: block; margin-top: 6px; color: #555; }
+
+  </style>
+</head>
+<body>
+  <h1>Hotel Final Price Predictor</h1>
+  <h2>This app belongs to the MSC Business Data Analytics Students, Cranfield University</h2>
+  <p>Developed exclusively for academic use and specifically for CMDC.</p>
+  <small class="mono">Student IDs - S489801, S482991, S470785, S493230, S480667, S487932, S477223</small>
+  <div class="card">
+    <form method="POST">
+      <div class="grid">
+        <div>
+          <label>Booking Date</label>
+          <input type="date" name="booking_date" required />
+        </div>
+        <div>
+          <label>Check-in Date</label>
+          <input type="date" name="check_in_date" required />
+        </div>
+        <div>
+          <label>Cluster</label>
+          <select name="cluster" required>
+            <option value="dynamic">dynamic</option>
+            <option value="moderate">moderate</option>
+            <option value="stable">stable</option>
+          </select>
+          <small class="mono">January to March = stable, April to June = Moderate, July to September = Dynamic </small>
+        </div>
+
+        <div>
+          <label>Star Rating (numeric)</label>
+          <input type="number" step="0.1" name="star_numeric" placeholder="e.g., 4 for CMDC" required />
+        </div>
+
+        <div>
+          <label>Customer Rating (numeric)</label>
+          <input type="number" step="0.1" name="customer_rating_num" placeholder="e.g., 4.4 for CMDC" required />
+        </div>
+
+        <div>
+          <label>Reviews (integer)</label>
+          <input type="number" step="1" name="reviews" placeholder="e.g., 368 for CMDC" required />
+        </div>
+        <div>
+          <label>Free WiFi (0/1)</label>
+          <select name="free_wifi_bin" required>
+            <option value="1">1 (Yes)</option>
+            <option value="0">0 (No)</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Free Parking (0/1)</label>
+          <select name="free_parking_bin" required>
+            <option value="1">1 (Yes)</option>
+            <option value="0">0 (No)</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit">Predict</button>
+        <small class="mono">Warning: This is not 100% Accurate. This is for educational purposely Only</small>
+    </form>
+  </div>
+
+  {% if error %}
+    <div class="card">
+      <div class="error">Error: {{ error }}</div>
+    </div>
+  {% endif %}
+
+  {% if result %}
+    <div class="card">
+      <h2>Results</h2>
+      <div class="kpi"><b>Final Price:</b> {{ result.final_price }}</div>
+      <hr />
+      <p class="mono"><b>Advance Booking Time:</b> {{ result.lead_time }}</p>
+      <p class="mono">
+      <b>Day Type:</b>
+      {% if result.is_weekend == 1 %}
+        Yiipy! It is a weekend 🎉
+      {% else %}
+        It is a weekday 💼
+      {% endif %}
+      </p>
+      <p class="mono"><b>This is the regression price:</b> {{ result.y_pred }}</p>
+      <p class="mono"><b>The Alpha value is :</b> {{ result.alpha }}</p>
+      <p class="mono"><b>The base price for CMDC:</b> {{ result.base_price }}</p>
+      <p class="mono"><b>Your Stay Month is:</b> {{ result.stay_month }}</p>
+    </div>
+  {% endif %}
+
+</body>
+</html>
