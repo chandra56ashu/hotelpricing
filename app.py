@@ -129,7 +129,9 @@ def index():
                 raise ValueError("Reviews cannot be negative.")
             if free_wifi_bin not in (0, 1) or free_parking_bin not in (0, 1):
                 raise ValueError("Free WiFi / Free Parking must be 0 or 1.")
-
+            # Positive value checks
+            if star_numeric <= 0 or customer_rating_num <= 0 or reviews <= 0:
+                raise ValueError("Only positive values are accepted.")
             # Auto-calculate stay_month from check_in_date
             stay_month = check_in_dt.strftime("%B").lower()
 
