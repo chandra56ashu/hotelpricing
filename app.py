@@ -54,7 +54,7 @@ def predict_final_price(
         "september": 0.4548
     }
 
-    stay_month = stay_month.strip().lower()
+    stay_month = stay_month.strip()
     x = month_effect.get(stay_month, 0)
 
     # Regression prediction (y_pred)
@@ -155,5 +155,6 @@ def index():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
 
 
