@@ -133,7 +133,7 @@ def index():
             if star_numeric <= 0 or customer_rating_num <= 0 or reviews <= 0:
                 raise ValueError("Only positive values are accepted.")
             # Auto-calculate stay_month from check_in_date
-            stay_month = check_in_dt.strftime("%B").lower()
+            stay_month = check_in_dt.strftime("%B")
 
             result = predict_final_price(
                 check_in_date=check_in_date,
@@ -155,6 +155,7 @@ def index():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
 
 
 
